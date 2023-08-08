@@ -20,6 +20,15 @@ if (false) {
 "
 `;
 
+exports[`prettier-pnp cli > should properly install plugins with peer deps 1`] = `
+"/** --- FIXTURE --- */
+
+const a = 5;
+
+if (false) true;
+"
+`;
+
 exports[`prettier-pnp cli > should work with --pn plugin 1`] = `
 "/** --- FIXTURE --- */
 
