@@ -1,13 +1,27 @@
 {
   "name": "prettier-pnp",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "packageManager": "pnpm@8.6.12",
+  "author": "auvred <aauvred@gmail.com> (https://github.com/auvred/)",
   "type": "module",
+  "description": "Run Prettier with plugins without installing them manually",
+  "keywords": [
+    "format",
+    "prettier"
+  ],
+  "homepage": "https://github.com/auvred/prettier-pnp#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/auvred/prettier-pnp"
+  },
+  "license": "MIT",
   "bin": "dist/bin.js",
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsup",
     "lint": "eslint .",
