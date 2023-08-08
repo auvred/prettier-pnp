@@ -27,7 +27,6 @@ export async function installNpmPackages(packages: string[]) {
       '--no-lockfile',
       '--omit=dev',
       '--install-strategy=shallow',
-      '--legacy-peer-deps',
       '--no-bin-links',
       '--no-global',
       ...packages,

@@ -99,4 +99,16 @@ describe('prettier-pnp cli', () => {
     expect(result.status).toEqual(0)
     expect(output).toMatchSnapshot()
   })
+
+  it('should properly install plugins with peer deps', () => {
+    const args = ['--pn', 'organize-imports', 'index.js']
+
+    const result = runPrettierPnpCli(...args)
+    const fixtureStart = result.stdout.search('/\\*\\* --- FIXTURE --- \\*/')
+    const output = result.stdout.slice(fixtureStart)
+
+    expect(fixtureStart).toBeGreaterThanOrEqual(0)
+    expect(result.status).toEqual(0)
+    expect(output).toMatchSnapshot()
+  })
 })
