@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        run: corepack enable && corepack prepare
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Set NPM access token
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+
+      - name: Publish to NPM
+        run: pnpm publish
+
+      - name: Publish Github Release
+        run: npx changelogithub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
