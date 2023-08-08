@@ -1,0 +1,17 @@
+{
+  "name": "prettier-pnp",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "bin": "dist/bin.js",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@auvred/eslint-config": "^0.4.0",
+    "@types/node": "^20.4.8",
+    "eslint": "^8.46.0",
+    "prettier": "^3.0.1",
+    "typescript": "~5.1.6"
+  }
+}
