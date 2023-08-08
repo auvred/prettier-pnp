@@ -2,6 +2,7 @@
   "name": "prettier-pnp",
   "private": true,
   "version": "0.0.0",
+  "packageManager": "pnpm@8.6.12",
   "type": "module",
   "bin": "dist/bin.js",
   "files": [
