@@ -1,0 +1,43 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`prettier-pnp cli > should format 1`] = `
+"/** --- FIXTURE --- */
+
+const a = 5;
+
+if (false) true;
+"
+`;
+
+exports[`prettier-pnp cli > should pass rest args to prettier 1`] = `
+"/** --- FIXTURE --- */
+
+const a = 5
+
+if (false) {
+  true
+}
+"
+`;
+
+exports[`prettier-pnp cli > should work with --pn plugin 1`] = `
+"/** --- FIXTURE --- */
+
+const a = 5;
+
+if (false) {
+  true;
+}
+"
+`;
+
+exports[`prettier-pnp cli > should work with --pnp plugin 1`] = `
+"/** --- FIXTURE --- */
+
+const a = 5;
+
+if (false) {
+  true;
+}
+"
+`;

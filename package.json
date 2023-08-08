@@ -7,14 +7,19 @@
   "files": [
     "dist"
   ],
+  "scripts": {
+    "test": "rimraf dist && tsc && vitest"
+  },
   "dependencies": {
     "import-meta-resolve": "^3.0.0",
-    "prettier": "^3.0.1"
+    "prettier": "^3.0.1",
+    "vitest": "^0.34.1"
   },
   "devDependencies": {
     "@auvred/eslint-config": "^0.4.0",
     "@types/node": "^20.4.8",
     "eslint": "^8.46.0",
+    "rimraf": "^5.0.1",
     "typescript": "~5.1.6"
   }
 }
