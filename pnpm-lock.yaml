@@ -4,6 +4,14 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+dependencies:
+  import-meta-resolve:
+    specifier: ^3.0.0
+    version: 3.0.0
+  prettier:
+    specifier: ^3.0.1
+    version: 3.0.1
+
 devDependencies:
   '@auvred/eslint-config':
     specifier: ^0.4.0
@@ -14,9 +22,6 @@ devDependencies:
   eslint:
     specifier: ^8.46.0
     version: 8.46.0
-  prettier:
-    specifier: ^3.0.1
-    version: 3.0.1
   typescript:
     specifier: ~5.1.6
     version: 5.1.6
@@ -1252,6 +1257,10 @@ packages:
       resolve-from: 4.0.0
     dev: true
 
+  /import-meta-resolve@3.0.0:
+    resolution: {integrity: sha512-4IwhLhNNA8yy445rPjD/lWh++7hMDOml2eHtd58eG7h+qK3EryMuuRbsHGPikCoAgIkkDnckKfWSk2iDla/ejg==}
+    dev: false
+
   /imurmurhash@0.1.4:
     resolution: {integrity: sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA==}
     engines: {node: '>=0.8.19'}
@@ -1959,7 +1968,6 @@ packages:
     resolution: {integrity: sha512-fcOWSnnpCrovBsmFZIGIy9UqK2FaI7Hqax+DIO0A9UxeVoY4iweyaFjS5TavZN97Hfehph0nhsZnjlVKzEQSrQ==}
     engines: {node: '>=14'}
     hasBin: true
-    dev: true
 
   /punycode@2.3.0:
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}
