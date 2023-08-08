@@ -4,8 +4,15 @@ import * as fs from 'node:fs'
 const sandboxPath = new URL('../sandbox/', import.meta.url)
 const sandboxNodeModulesPath = new URL('node_modules/', sandboxPath)
 
-function cleanup() {
+function cleanupNodeModules() {
   fs.rmSync(sandboxNodeModulesPath, { recursive: true, force: true })
+}
+
+function cleanupPluginStore() {
+  fs.rmSync(
+    new URL('prettier-pnp/dist/plugin-store/', sandboxNodeModulesPath),
+    { recursive: true, force: true },
+  )
 }
 
 export function runPrettierPnpCli(...args: string[]) {
@@ -22,7 +29,7 @@ export function runPrettierPnpCli(...args: string[]) {
 
 describe('prettier-pnp cli', () => {
   beforeAll(() => {
-    cleanup()
+    cleanupNodeModules()
 
     const npmInstallResult = child_process.spawnSync(
       process.platform.startsWith('win') ? 'npm.cmd' : 'npm',
@@ -34,20 +41,18 @@ describe('prettier-pnp cli', () => {
     )
 
     if (npmInstallResult.status !== 0) {
-      cleanup()
+      cleanupNodeModules()
       throw new Error('Failed to run `npm install` during setup')
     }
   })
 
   beforeEach(() => {
-    fs.rmSync(
-      new URL('prettier-pnp/dist/plugin-store/', sandboxNodeModulesPath),
-      { recursive: true, force: true },
-    )
+    cleanupPluginStore()
   })
 
   afterAll(() => {
-    cleanup()
+    cleanupPluginStore()
+    cleanupNodeModules()
   })
 
   it('should format', () => {
