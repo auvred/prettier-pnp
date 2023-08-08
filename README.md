@@ -4,7 +4,7 @@ Prettier-pnp is utility for running [Prettier](https://github.com/prettier/prett
 
 ## Why?
 
-Sometimes you need to format some files, but you don't want to create a `package.json`, install Prettier and plugins for it. Also can't load plugins installed globally, because it trying to to `import()` them. Node.js [doesn't support import from `NODE_PATH`](https://nodejs.org/api/esm.html#esm_no_node_path).
+Sometimes you need to format some files, but you don't want to create a `package.json`, install Prettier and plugins for it. Also Prettier can't load plugins installed globally (it tries to `import()` them, but Node.js [doesn't support import from `NODE_PATH`](https://nodejs.org/api/esm.html#esm_no_node_path)).
 
 This may be useful for CI environments, where you need to quickly check the formatting of files.
 
@@ -52,13 +52,13 @@ The folder structure will look like this:
 
 ```
 /home/user/node_modules
-  prettier-pnp
+ 📂 prettier-pnp
  ├─   package.json
- ├─  dist
- └─  plugin-store
+ ├─ 📁 dist
+ └─ 📂 plugin-store
     ├─   package.json
-    └─  node_modules
-       └─  prettier-plugin-my-plugin
+    └─ 📂 node_modules
+       └─ 📂 prettier-plugin-my-plugin
           ├─   index.js
           └─   package.json
 ```
