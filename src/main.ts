@@ -7,10 +7,15 @@ import { PLUGINS_PACKAGE_JSON_PATH } from './paths.js'
 export async function run(args: string[]) {
   const { prettierArgs, pluginNames } = parseArgs(args)
 
-  try {
-    await installNpmPackages(pluginNames)
-  } catch {
-    process.exit(1)
+  if (pluginNames.length) {
+    try {
+      console.log('\n---- Installing plugins ----\n')
+      pluginNames.forEach(pluginName => console.log(' - ' + pluginName))
+      await installNpmPackages(pluginNames)
+      console.log('\n----- Running prettier -----\n')
+    } catch {
+      process.exit(1)
+    }
   }
 
   const prettierCli = await import('prettier/internal/cli.mjs')
