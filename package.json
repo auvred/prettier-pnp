@@ -25,6 +25,7 @@
   "scripts": {
     "build": "tsup",
     "lint": "eslint .",
+    "release": "bumpp",
     "test": "pnpm build && vitest",
     "type-check": "tsc --noEmit",
     "type-check-test": "tsc --noEmit -p tsconfig.test.json"
@@ -36,6 +37,7 @@
   "devDependencies": {
     "@auvred/eslint-config": "^0.4.0",
     "@types/node": "^20.4.8",
+    "bumpp": "^9.1.1",
     "eslint": "^8.46.0",
     "tsup": "^7.2.0",
     "typescript": "~5.1.6",
