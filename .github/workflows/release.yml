@@ -25,7 +25,7 @@ jobs:
         run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
 
       - name: Publish to NPM
-        run: pnpm publish
+        run: pnpm publish --no-git-checks
 
       - name: Publish Github Release
         run: npx changelogithub
