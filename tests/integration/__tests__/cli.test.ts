@@ -99,6 +99,51 @@ describe('prettier-pnp cli', () => {
     assertCliCallResult(...args)
   })
 
+  it('should dedupe plugins with identical names 1', () => {
+    const args = [
+      '--pn',
+      'organize-imports',
+      '--pnp',
+      'prettier-plugin-organize-imports@latest',
+      '--pn',
+      'curly',
+      'index.js',
+    ]
+
+    const result = runPrettierPnpCli(...args)
+    expect(result.status).toEqual(0)
+    expect(result.stdout.split('\n').slice(0, 6).join('\n'))
+      .toMatchInlineSnapshot(`
+        "
+        ---- Installing plugins ----
+
+         - prettier-plugin-organize-imports
+         - prettier-plugin-curly
+        "
+      `)
+  })
+
+  it('should dedupe plugins with identical names 2', () => {
+    const args = [
+      '--pnp',
+      'prettier-plugin-organize-imports@latest',
+      '--pn',
+      'organize-imports@duplicated',
+      'index.js',
+    ]
+
+    const result = runPrettierPnpCli(...args)
+    expect(result.status).toEqual(0)
+    expect(result.stdout.split('\n').slice(0, 5).join('\n'))
+      .toMatchInlineSnapshot(`
+        "
+        ---- Installing plugins ----
+
+         - prettier-plugin-organize-imports@latest
+        "
+      `)
+  })
+
   it('should install plugins with specific version', () => {
     const args = [
       '--pn',
