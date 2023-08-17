@@ -12,9 +12,9 @@ This may be useful for CI environments, where you need to quickly check the form
 
 Prettier-pnp works like a proxy for `prettier` cli. All arguments passed to `prettier-pnp` will be forwarded directly to `prettier`. Prettier-pnp adds only two new args:
 
-- `--pnp <plugin name>`
+- `--pnp <plugin name>` or `--pnp <plugin name>@<version>`
 
-  Runs `prettier` with plugin named `<plugin name>`.
+  Runs `prettier` with plugin named `<plugin name>` (or `<plugin name>@<version>` if the version was specified).
 
   Example:
 
@@ -22,7 +22,7 @@ Prettier-pnp works like a proxy for `prettier` cli. All arguments passed to `pre
   npx prettier-pnp --pnp prettier-plugin-curly index.js
   ```
 
-- `--pn <short plugin name>`
+- `--pn <short plugin name>` or `--pn <short plugin name>@<version>`
 
   Shorthand for `--pnp`. If plugin name starts with `prettier-plugin-`, then you can omit this part.
 

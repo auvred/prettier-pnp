@@ -9,6 +9,27 @@ if (false) true;
 "
 `;
 
+exports[`prettier-pnp cli > should install plugins with specific version 1`] = `
+"/** --- FIXTURE --- */
+
+const a = 5;
+
+if (false) {
+  true;
+}
+"
+`;
+
+exports[`prettier-pnp cli > should install plugins with specific version 2`] = `
+"{
+  \\"dependencies\\": {
+    \\"prettier-plugin-curly-and-jsdoc\\": \\"^0.118.0\\",
+    \\"prettier-plugin-organize-imports\\": \\"~3.0.2\\"
+  }
+}
+"
+`;
+
 exports[`prettier-pnp cli > should pass rest args to prettier 1`] = `
 "/** --- FIXTURE --- */
 
