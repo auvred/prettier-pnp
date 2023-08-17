@@ -9,6 +9,18 @@ export function parseArgs(args: string[]): {
   const prettierArgs: string[] = []
   const pluginNames: string[] = []
 
+  function pushPluginName(pluginName: string) {
+    const isDuplicated = pluginNames.some(
+      name => name.split('@')[0] === pluginName.split('@')[0],
+    )
+
+    if (isDuplicated) {
+      return
+    }
+
+    pluginNames.push(pluginName)
+  }
+
   for (let index = 0; index < args.length; index++) {
     const arg = args[index]
     if (/^--.+=/.test(arg)) {
@@ -17,10 +29,10 @@ export function parseArgs(args: string[]): {
         const key = match[1]
         const value = match[2]
         if (key === 'pnp') {
-          pluginNames.push(value)
+          pushPluginName(value)
           continue
         } else if (key === 'pn') {
-          pluginNames.push(extendPluginName(value))
+          pushPluginName(extendPluginName(value))
         }
       }
     } else if (/^--.+/.test(arg)) {
@@ -31,9 +43,9 @@ export function parseArgs(args: string[]): {
           const next = args[index + 1]
           if (next !== undefined && !/^(-|--)[^-]/.test(next)) {
             if (key === 'pnp') {
-              pluginNames.push(next)
+              pushPluginName(next)
             } else if (key === 'pn') {
-              pluginNames.push(extendPluginName(next))
+              pushPluginName(extendPluginName(next))
             }
             index += 1
           }
