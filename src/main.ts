@@ -1,6 +1,6 @@
 import { resolve } from 'import-meta-resolve'
 
-import { installNpmPackages } from './install-npm-packages.js'
+import { installPlugins } from './install-plugins.js'
 import { parseArgs } from './parse-args.js'
 import { PLUGINS_PACKAGE_JSON_PATH } from './paths.js'
 
@@ -9,9 +9,7 @@ export async function run(args: string[]) {
 
   if (pluginNames.length) {
     try {
-      console.log('\n---- Installing plugins ----\n')
-      pluginNames.forEach(pluginName => console.log(' - ' + pluginName))
-      await installNpmPackages(pluginNames)
+      await installPlugins(pluginNames)
       console.log('\n----- Running prettier -----\n')
     } catch {
       process.exit(1)

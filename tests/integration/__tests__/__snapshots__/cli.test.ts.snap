@@ -30,6 +30,60 @@ exports[`prettier-pnp cli > should install plugins with specific version 2`] = `
 "
 `;
 
+exports[`prettier-pnp cli > should not try to install already installed plugins (with fixed version) 2`] = `
+"
+----- Already installed ----
+
+ - prettier-plugin-curly
+
+----- Running prettier -----
+
+/** --- FIXTURE --- */
+
+const a = 5;
+
+if (false) {
+  true;
+}
+"
+`;
+
+exports[`prettier-pnp cli > should not try to install already installed plugins (with fixed version) 3`] = `
+"
+----- Already installed ----
+
+ - prettier-plugin-curly
+
+----- Running prettier -----
+
+/** --- FIXTURE --- */
+
+const a = 5;
+
+if (false) {
+  true;
+}
+"
+`;
+
+exports[`prettier-pnp cli > should not try to install already installed plugins (with fixed version) 4`] = `
+"
+----- Already installed ----
+
+ - prettier-plugin-curly
+
+----- Running prettier -----
+
+/** --- FIXTURE --- */
+
+const a = 5;
+
+if (false) {
+  true;
+}
+"
+`;
+
 exports[`prettier-pnp cli > should pass rest args to prettier 1`] = `
 "/** --- FIXTURE --- */
 
