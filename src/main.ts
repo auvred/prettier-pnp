@@ -22,6 +22,7 @@ export async function run(args: string[]) {
 
   const pnpPlugins: string[] = []
   pluginNames.forEach(pluginName => {
+    pluginName = pluginName.split('@')[0]
     const resolved = resolve(pluginName, PLUGINS_PACKAGE_JSON_PATH.href)
     pnpPlugins.push('--plugin', resolved)
   })

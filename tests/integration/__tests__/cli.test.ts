@@ -3,16 +3,17 @@ import * as fs from 'node:fs'
 
 const sandboxPath = new URL('../sandbox/', import.meta.url)
 const sandboxNodeModulesPath = new URL('node_modules/', sandboxPath)
+const pluginStorePath = new URL(
+  'prettier-pnp/dist/plugin-store/',
+  sandboxNodeModulesPath,
+)
 
 function cleanupNodeModules() {
   fs.rmSync(sandboxNodeModulesPath, { recursive: true, force: true })
 }
 
 function cleanupPluginStore() {
-  fs.rmSync(
-    new URL('prettier-pnp/dist/plugin-store/', sandboxNodeModulesPath),
-    { recursive: true, force: true },
-  )
+  fs.rmSync(pluginStorePath, { recursive: true, force: true })
 }
 
 export function runPrettierPnpCli(...args: string[]) {
@@ -25,6 +26,16 @@ export function runPrettierPnpCli(...args: string[]) {
       encoding: 'utf-8',
     },
   )
+}
+
+function assertCliCallResult(...args: string[]) {
+  const result = runPrettierPnpCli(...args)
+  const fixtureStart = result.stdout.search('/\\*\\* --- FIXTURE --- \\*/')
+  const output = result.stdout.slice(fixtureStart)
+
+  expect(fixtureStart).toBeGreaterThanOrEqual(0)
+  expect(result.status).toEqual(0)
+  expect(output).toMatchSnapshot()
 }
 
 describe('prettier-pnp cli', () => {
@@ -67,48 +78,42 @@ describe('prettier-pnp cli', () => {
   it('should work with --pn plugin', () => {
     const args = ['--pn', 'curly', 'index.js']
 
-    const result = runPrettierPnpCli(...args)
-    const fixtureStart = result.stdout.search('/\\*\\* --- FIXTURE --- \\*/')
-    const output = result.stdout.slice(fixtureStart)
-
-    expect(fixtureStart).toBeGreaterThanOrEqual(0)
-    expect(result.status).toEqual(0)
-    expect(output).toMatchSnapshot()
+    assertCliCallResult(...args)
   })
 
   it('should work with --pnp plugin', () => {
     const args = ['--pnp', 'prettier-plugin-curly', 'index.js']
 
-    const result = runPrettierPnpCli(...args)
-    const fixtureStart = result.stdout.search('/\\*\\* --- FIXTURE --- \\*/')
-    const output = result.stdout.slice(fixtureStart)
-
-    expect(fixtureStart).toBeGreaterThanOrEqual(0)
-    expect(result.status).toEqual(0)
-    expect(output).toMatchSnapshot()
+    assertCliCallResult(...args)
   })
 
   it('should pass rest args to prettier', () => {
     const args = ['--pn', 'curly', '--no-semi', 'index.js']
 
-    const result = runPrettierPnpCli(...args)
-    const fixtureStart = result.stdout.search('/\\*\\* --- FIXTURE --- \\*/')
-    const output = result.stdout.slice(fixtureStart)
-
-    expect(fixtureStart).toBeGreaterThanOrEqual(0)
-    expect(result.status).toEqual(0)
-    expect(output).toMatchSnapshot()
+    assertCliCallResult(...args)
   })
 
   it('should properly install plugins with peer deps', () => {
     const args = ['--pn', 'organize-imports', 'index.js']
 
-    const result = runPrettierPnpCli(...args)
-    const fixtureStart = result.stdout.search('/\\*\\* --- FIXTURE --- \\*/')
-    const output = result.stdout.slice(fixtureStart)
+    assertCliCallResult(...args)
+  })
 
-    expect(fixtureStart).toBeGreaterThanOrEqual(0)
-    expect(result.status).toEqual(0)
-    expect(output).toMatchSnapshot()
+  it('should install plugins with specific version', () => {
+    const args = [
+      '--pn',
+      'organize-imports@~3.0.2',
+      '--pn',
+      'curly-and-jsdoc@0.118.0',
+      'index.js',
+    ]
+
+    assertCliCallResult(...args)
+    const packageJson = fs.readFileSync(
+      new URL('package.json', pluginStorePath),
+      'utf-8',
+    )
+
+    expect(packageJson).toMatchSnapshot()
   })
 })
