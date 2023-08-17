@@ -1,3 +1,5 @@
+import { splitPluginNameAndVersion } from './utils.js'
+
 function extendPluginName(shortName: string) {
   return 'prettier-plugin-' + shortName
 }
@@ -11,7 +13,9 @@ export function parseArgs(args: string[]): {
 
   function pushPluginName(pluginName: string) {
     const isDuplicated = pluginNames.some(
-      name => name.split('@')[0] === pluginName.split('@')[0],
+      name =>
+        splitPluginNameAndVersion(name).name ===
+        splitPluginNameAndVersion(pluginName).name,
     )
 
     if (isDuplicated) {

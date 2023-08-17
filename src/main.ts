@@ -3,6 +3,7 @@ import { resolve } from 'import-meta-resolve'
 import { installPlugins } from './install-plugins.js'
 import { parseArgs } from './parse-args.js'
 import { PLUGINS_PACKAGE_JSON_PATH } from './paths.js'
+import { splitPluginNameAndVersion } from './utils.js'
 
 export async function run(args: string[]) {
   const { prettierArgs, pluginNames } = parseArgs(args)
@@ -20,7 +21,7 @@ export async function run(args: string[]) {
 
   const pnpPlugins: string[] = []
   pluginNames.forEach(pluginName => {
-    pluginName = pluginName.split('@')[0]
+    pluginName = splitPluginNameAndVersion(pluginName).name
     const resolved = resolve(pluginName, PLUGINS_PACKAGE_JSON_PATH.href)
     pnpPlugins.push('--plugin', resolved)
   })

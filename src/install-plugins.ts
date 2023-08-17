@@ -2,6 +2,7 @@ import { spawn } from 'node:child_process'
 import fs from 'node:fs'
 
 import { PLUGINS_PACKAGE_JSON_PATH, PLUGIN_STORE_PATH } from './paths.js'
+import { splitPluginNameAndVersion } from './utils.js'
 
 const npmExecutable = process.platform.startsWith('win') ? 'npm.cmd' : 'npm'
 
@@ -33,10 +34,8 @@ function filterPluginsToInstall(pluginNames: string[]) {
   const installedPlugins: string[] = []
 
   pluginNames.forEach(rawPluginName => {
-    let [pluginName, pluginVersion] = rawPluginName.split('@') as [
-      string,
-      string | undefined,
-    ]
+    let { name: pluginName, version: pluginVersion } =
+      splitPluginNameAndVersion(rawPluginName)
     if (
       pluginVersion &&
       (pluginVersion.startsWith('^') || pluginVersion.startsWith('~'))

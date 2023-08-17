@@ -162,6 +162,21 @@ describe('prettier-pnp cli', () => {
     expect(packageJson).toMatchSnapshot()
   })
 
+  it('should install plugin with a name starting with @', () => {
+    const args1 = ['--pnp', '@prettier/plugin-php', 'index.js']
+
+    const result = runPrettierPnpCli(...args1)
+    expect(result.status).toEqual(0)
+    expect(result.stdout.split('\n').slice(0, 5).join('\n'))
+      .toMatchInlineSnapshot(`
+        "
+        ---- Installing plugins ----
+
+         - @prettier/plugin-php
+        "
+      `)
+  })
+
   it('should not try to install already installed plugins', () => {
     const args1 = ['--pn', 'curly', 'index.js']
     const args2 = ['--pn', 'curly', '--pn', 'organize-imports', 'index.js']
