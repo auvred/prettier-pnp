@@ -161,4 +161,142 @@ describe('prettier-pnp cli', () => {
 
     expect(packageJson).toMatchSnapshot()
   })
+
+  it('should install plugin with a name starting with @', () => {
+    const args1 = ['--pnp', '@prettier/plugin-php', 'index.js']
+
+    const result = runPrettierPnpCli(...args1)
+    expect(result.status).toEqual(0)
+    expect(result.stdout.split('\n').slice(0, 5).join('\n'))
+      .toMatchInlineSnapshot(`
+        "
+        ---- Installing plugins ----
+
+         - @prettier/plugin-php
+        "
+      `)
+  })
+
+  it('should not try to install already installed plugins', () => {
+    const args1 = ['--pn', 'curly', 'index.js']
+    const args2 = ['--pn', 'curly', '--pn', 'organize-imports', 'index.js']
+
+    const firstRun = runPrettierPnpCli(...args1)
+    expect(firstRun.status).toEqual(0)
+    expect(firstRun.stdout.split('\n').slice(0, 5).join('\n'))
+      .toMatchInlineSnapshot(`
+        "
+        ---- Installing plugins ----
+
+         - prettier-plugin-curly
+        "
+      `)
+
+    const runWithSamePlugin = runPrettierPnpCli(...args1)
+    expect(runWithSamePlugin.status).toEqual(0)
+    expect(runWithSamePlugin.stdout).toMatchInlineSnapshot(`
+      "
+      ----- Already installed ----
+
+       - prettier-plugin-curly
+
+      ----- Running prettier -----
+
+      /** --- FIXTURE --- */
+
+      const a = 5;
+
+      if (false) {
+        true;
+      }
+      "
+    `)
+
+    const runWithNewPlugin = runPrettierPnpCli(...args2)
+    expect(runWithNewPlugin.status).toEqual(0)
+    expect(runWithNewPlugin.stdout.split('\n').slice(0, 9).join('\n'))
+      .toMatchInlineSnapshot(`
+        "
+        ----- Already installed ----
+
+         - prettier-plugin-curly
+
+        ---- Installing plugins ----
+
+         - prettier-plugin-organize-imports
+        "
+      `)
+
+    const runWithNewPluginAgain = runPrettierPnpCli(...args2)
+    expect(runWithNewPluginAgain.status).toEqual(0)
+    expect(runWithNewPluginAgain.stdout).toMatchInlineSnapshot(`
+      "
+      ----- Already installed ----
+
+       - prettier-plugin-curly
+       - prettier-plugin-organize-imports
+
+      ----- Running prettier -----
+
+      /** --- FIXTURE --- */
+
+      const a = 5;
+
+      if (false) true;
+      "
+    `)
+  })
+
+  it('should not try to install already installed plugins (with fixed version)', () => {
+    const args1 = ['--pn', 'curly@0.1.1', 'index.js']
+    const args = [
+      ['--pn', 'curly@0.1.1', 'index.js'],
+      ['--pn', 'curly@^0.1.1', 'index.js'],
+      ['--pn', 'curly@~0.1.1', 'index.js'],
+    ]
+
+    const firstRun = runPrettierPnpCli(...args1)
+    expect(firstRun.status).toEqual(0)
+    expect(firstRun.stdout.split('\n').slice(0, 5).join('\n'))
+      .toMatchInlineSnapshot(`
+        "
+        ---- Installing plugins ----
+
+         - prettier-plugin-curly@0.1.1
+        "
+      `)
+
+    args.forEach(args => {
+      const result = runPrettierPnpCli(...args)
+      expect(result.status).toEqual(0)
+      expect(result.stdout).toMatchSnapshot()
+    })
+  })
+
+  it('should reinstall plugin if new version specified', () => {
+    const args1 = ['--pn', 'curly@0.1.1', 'index.js']
+    const args2 = ['--pn', 'curly@0.1.2', 'index.js']
+
+    const firstRun = runPrettierPnpCli(...args1)
+    expect(firstRun.status).toEqual(0)
+    expect(firstRun.stdout.split('\n').slice(0, 5).join('\n'))
+      .toMatchInlineSnapshot(`
+        "
+        ---- Installing plugins ----
+
+         - prettier-plugin-curly@0.1.1
+        "
+      `)
+
+    const secondRun = runPrettierPnpCli(...args2)
+    expect(secondRun.status).toEqual(0)
+    expect(secondRun.stdout.split('\n').slice(0, 5).join('\n'))
+      .toMatchInlineSnapshot(`
+        "
+        ---- Installing plugins ----
+
+         - prettier-plugin-curly@0.1.2
+        "
+      `)
+  })
 })
