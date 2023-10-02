@@ -6,12 +6,14 @@ import { PLUGINS_PACKAGE_JSON_PATH } from './paths.js'
 import { splitPluginNameAndVersion } from './utils.js'
 
 export async function run(args: string[]) {
-  const { prettierArgs, pluginNames } = parseArgs(args)
+  const { prettierArgs, pluginNames, extraArgs } = parseArgs(args)
 
   if (pluginNames.length) {
     try {
-      await installPlugins(pluginNames)
-      console.log('\n----- Running prettier -----\n')
+      await installPlugins(pluginNames, extraArgs)
+      if (!extraArgs.quiet) {
+        console.log('\n----- Running prettier -----\n')
+      }
     } catch {
       process.exit(1)
     }

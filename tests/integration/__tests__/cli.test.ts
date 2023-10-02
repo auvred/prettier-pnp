@@ -299,4 +299,31 @@ describe('prettier-pnp cli', () => {
         "
       `)
   })
+
+  describe('w/ --quite', () => {
+    it('should be less verbose', () => {
+      const args = ['--pn', 'curly', '--no-semi', '--quiet', 'index.js']
+
+      assertCliCallResult(...args)
+    })
+
+    it('should print out npm stderr', () => {
+      const args = ['--pn', 'curly_', '--quiet', 'index.js']
+
+      const result = runPrettierPnpCli(...args)
+      expect(result.status).toEqual(1)
+      expect(result.stdout).toEqual('')
+      expect(result.stderr.split('\n').slice(0, -2).join('\n'))
+        .toMatchInlineSnapshot(`
+        "npm ERR! code E404
+        npm ERR! 404 Not Found - GET https://registry.npmjs.org/prettier-plugin-curly_ - Not found
+        npm ERR! 404 
+        npm ERR! 404  'prettier-plugin-curly_@*' is not in this registry.
+        npm ERR! 404 
+        npm ERR! 404 Note that you can also install from a
+        npm ERR! 404 tarball, folder, http url, or git url.
+        "
+      `)
+    })
+  })
 })

@@ -125,3 +125,14 @@ if (false) {
 }
 "
 `;
+
+exports[`prettier-pnp cli > w/ --quite > should be less verbose 1`] = `
+"/** --- FIXTURE --- */
+
+const a = 5
+
+if (false) {
+  true
+}
+"
+`;
