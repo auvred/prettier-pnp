@@ -313,7 +313,7 @@ describe('prettier-pnp cli', () => {
       const result = runPrettierPnpCli(...args)
       expect(result.status).toEqual(1)
       expect(result.stdout).toEqual('')
-      expect(result.stderr.split('\n').slice(0, -2).join('\n'))
+      expect(result.stderr.split('\n').slice(0, 8).join('\n'))
         .toMatchInlineSnapshot(`
         "npm ERR! code E404
         npm ERR! 404 Not Found - GET https://registry.npmjs.org/prettier-plugin-curly_ - Not found
