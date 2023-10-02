@@ -4,6 +4,8 @@ import fs from 'node:fs'
 import { PLUGINS_PACKAGE_JSON_PATH, PLUGIN_STORE_PATH } from './paths.js'
 import { splitPluginNameAndVersion } from './utils.js'
 
+import type { ExtraArgs } from './parse-args.js'
+
 const npmExecutable = process.platform.startsWith('win') ? 'npm.cmd' : 'npm'
 
 function listStoreDependencies(): [string, string][] {
@@ -77,7 +79,10 @@ function filterPluginsToInstall(pluginNames: string[]) {
   }
 }
 
-export async function installPlugins(pluginNames: string[]) {
+export async function installPlugins(
+  pluginNames: string[],
+  extraArgs: ExtraArgs,
+) {
   if (!pluginNames.length) {
     return
   }
@@ -93,14 +98,16 @@ export async function installPlugins(pluginNames: string[]) {
   const { pluginsToInstall, installedPlugins } =
     filterPluginsToInstall(pluginNames)
 
-  if (installedPlugins.length) {
+  if (installedPlugins.length && !extraArgs.quiet) {
     console.log('\n----- Already installed ----\n')
     installedPlugins.forEach(pluginName => console.log(` - ${pluginName}`))
   }
 
   if (pluginsToInstall.length) {
-    console.log('\n---- Installing plugins ----\n')
-    pluginsToInstall.forEach(pluginName => console.log(` - ${pluginName}`))
+    if (!extraArgs.quiet) {
+      console.log('\n---- Installing plugins ----\n')
+      pluginsToInstall.forEach(pluginName => console.log(` - ${pluginName}`))
+    }
 
     const child = spawn(
       npmExecutable,
@@ -118,17 +125,29 @@ export async function installPlugins(pluginNames: string[]) {
       {
         cwd: PLUGIN_STORE_PATH,
         env: Object.assign({}, process.env, { NODE_ENV: 'production' }),
-        stdio: 'inherit',
+        stdio: extraArgs.quiet ? ['inherit', 'pipe', 'pipe'] : 'inherit',
       },
     )
 
+    let stderr = ''
+
+    if (extraArgs.quiet) {
+      child.stderr?.on('data', data => (stderr += data))
+    }
+
     return await new Promise<void>((resolve, reject) => {
       child.on('error', err => {
+        if (extraArgs.quiet) {
+          process.stderr.write(stderr)
+        }
         reject(err)
       })
       child.on('exit', code => {
         if (code === 0) {
           return resolve()
+        }
+        if (extraArgs.quiet) {
+          process.stderr.write(stderr)
         }
         reject()
       })

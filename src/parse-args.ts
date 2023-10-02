@@ -4,12 +4,20 @@ function extendPluginName(shortName: string) {
   return 'prettier-plugin-' + shortName
 }
 
+export interface ExtraArgs {
+  quiet: boolean
+}
+
 export function parseArgs(args: string[]): {
   prettierArgs: string[]
   pluginNames: string[]
+  extraArgs: ExtraArgs
 } {
   const prettierArgs: string[] = []
   const pluginNames: string[] = []
+  const extraArgs: ExtraArgs = {
+    quiet: false,
+  }
 
   function pushPluginName(pluginName: string) {
     const isDuplicated = pluginNames.some(
@@ -25,6 +33,28 @@ export function parseArgs(args: string[]): {
     pluginNames.push(pluginName)
   }
 
+  function processArg(key: string, value?: string): boolean {
+    switch (key) {
+      case 'pnp':
+        if (value) {
+          pushPluginName(value)
+          return true
+        }
+        return false
+      case 'pn':
+        if (value) {
+          pushPluginName(extendPluginName(value))
+          return true
+        }
+        return false
+      case 'quiet':
+        extraArgs.quiet = true
+        return true
+    }
+
+    return false
+  }
+
   for (let index = 0; index < args.length; index++) {
     const arg = args[index]
     if (/^--.+=/.test(arg)) {
@@ -32,27 +62,26 @@ export function parseArgs(args: string[]): {
       if (match) {
         const key = match[1]
         const value = match[2]
-        if (key === 'pnp') {
-          pushPluginName(value)
+        if (processArg(key, value)) {
           continue
-        } else if (key === 'pn') {
-          pushPluginName(extendPluginName(value))
         }
       }
     } else if (/^--.+/.test(arg)) {
       const match = arg.match(/^--(.+)/)
       if (match) {
         const key = match[1]
-        if (key === 'pnp' || key === 'pn') {
-          const next = args[index + 1]
-          if (next !== undefined && !/^(-|--)[^-]/.test(next)) {
-            if (key === 'pnp') {
-              pushPluginName(next)
-            } else if (key === 'pn') {
-              pushPluginName(extendPluginName(next))
-            }
-            index += 1
-          }
+        const next = args[index + 1]
+
+        if (processArg(key)) {
+          continue
+        }
+
+        if (
+          next !== undefined &&
+          !/^(-|--)[^-]/.test(next) &&
+          processArg(key, next)
+        ) {
+          index += 1
           continue
         }
       }
@@ -64,5 +93,6 @@ export function parseArgs(args: string[]): {
   return {
     prettierArgs,
     pluginNames,
+    extraArgs,
   }
 }

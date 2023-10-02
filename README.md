@@ -10,7 +10,7 @@ This may be useful for CI environments, where you need to quickly check the form
 
 ## How?
 
-Prettier-pnp works like a proxy for `prettier` cli. All arguments passed to `prettier-pnp` will be forwarded directly to `prettier`. Prettier-pnp adds only two new args:
+Prettier-pnp works like a proxy for `prettier` cli. All arguments passed to `prettier-pnp` will be forwarded directly to `prettier`. Prettier-pnp adds only three new args:
 
 - `--pnp <plugin name>` or `--pnp <plugin name>@<version>`
 
@@ -31,6 +31,10 @@ Prettier-pnp works like a proxy for `prettier` cli. All arguments passed to `pre
   ```shell
   npx prettier-pnp --pn curly index.js
   ```
+
+- `--quiet`
+
+  Prevent any extra output (e.g plugin installation progress). Only the output of Prettier will be printed.
 
 Prettier-pnp includes Prettier as dependency. Also, all requested plugins are stored in the internal storage (`plugin-store` folder inside the installed `prettier-pnp`). So, when you run:
 
