@@ -1,6 +1,6 @@
 {
   "name": "prettier-pnp",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "packageManager": "pnpm@8.7.4",
   "author": "auvred <aauvred@gmail.com> (https://github.com/auvred/)",
   "type": "module",
