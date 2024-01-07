@@ -1,3 +1,4 @@
+import { log } from './utils.js'
 import { resolve } from 'import-meta-resolve'
 
 import { installPlugins } from './install-plugins.js'
@@ -12,7 +13,7 @@ export async function run(args: string[]) {
     try {
       await installPlugins(pluginNames, extraArgs)
       if (!extraArgs.quiet) {
-        console.log('\n----- Running prettier -----\n')
+        log('\n----- Running prettier -----\n')
       }
     } catch {
       process.exit(1)

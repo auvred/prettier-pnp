@@ -1,3 +1,4 @@
+import { log } from './utils.js'
 import { spawn } from 'node:child_process'
 import fs from 'node:fs'
 
@@ -99,14 +100,14 @@ export async function installPlugins(
     filterPluginsToInstall(pluginNames)
 
   if (installedPlugins.length && !extraArgs.quiet) {
-    console.log('\n----- Already installed ----\n')
-    installedPlugins.forEach(pluginName => console.log(` - ${pluginName}`))
+    log('\n----- Already installed ----\n')
+    installedPlugins.forEach(pluginName => log(` - ${pluginName}`))
   }
 
   if (pluginsToInstall.length) {
     if (!extraArgs.quiet) {
-      console.log('\n---- Installing plugins ----\n')
-      pluginsToInstall.forEach(pluginName => console.log(` - ${pluginName}`))
+      log('\n---- Installing plugins ----\n')
+      pluginsToInstall.forEach(pluginName => log(` - ${pluginName}`))
     }
 
     const child = spawn(
