@@ -14,16 +14,13 @@ exports[`prettier-pnp cli > should install plugins with specific version 1`] = `
 
 const a = 5;
 
-if (false) {
-  true;
-}
+if (false) true;
 "
 `;
 
 exports[`prettier-pnp cli > should install plugins with specific version 2`] = `
 "{
   \\"dependencies\\": {
-    \\"prettier-plugin-curly-and-jsdoc\\": \\"^0.118.0\\",
     \\"prettier-plugin-organize-imports\\": \\"~3.0.2\\"
   }
 }
