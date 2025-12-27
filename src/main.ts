@@ -19,7 +19,13 @@ export async function run(args: string[]) {
     }
   }
 
-  const prettierCli = await import('prettier/internal/cli.mjs')
+  let prettierCli: typeof import('prettier/internal/cli.mjs')
+  try {
+    // prettier 3.6+
+    prettierCli = await import('prettier/internal/legacy-cli.mjs')
+  } catch {
+    prettierCli = await import('prettier/internal/cli.mjs')
+  }
 
   const pnpPlugins: string[] = []
   pluginNames.forEach(pluginName => {
