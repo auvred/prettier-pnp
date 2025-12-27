@@ -124,6 +124,7 @@ export async function installPlugins(
       ],
       {
         cwd: PLUGIN_STORE_PATH,
+        shell: true,
         env: Object.assign({}, process.env, { NODE_ENV: 'production' }),
         stdio: extraArgs.quiet ? ['inherit', 'pipe', 'pipe'] : 'inherit',
       },

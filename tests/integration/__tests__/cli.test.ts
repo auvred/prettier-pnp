@@ -23,6 +23,7 @@ export function runPrettierPnpCli(...args: string[]) {
     {
       cwd: sandboxPath,
       env: process.env,
+      shell: true,
       encoding: 'utf-8',
     },
   )
@@ -47,6 +48,7 @@ describe('prettier-pnp cli', () => {
       ['install', '--no-package-lock'],
       {
         cwd: sandboxPath,
+        shell: true,
         stdio: 'inherit',
       },
     )
@@ -313,8 +315,7 @@ describe('prettier-pnp cli', () => {
       const result = runPrettierPnpCli(...args)
       expect(result.status).toEqual(1)
       expect(result.stdout).toEqual('')
-      expect(result.stderr.split('\n').slice(0, 8).join('\n'))
-        .toContain(`404 Not Found - GET https://registry.npmjs.org/prettier-plugin-curly_ - Not found`)
+      expect(result.stderr).toContain(`404 Not Found - GET https://registry.npmjs.org/prettier-plugin-curly_ - Not found`)
     })
   })
 })
